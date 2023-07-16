@@ -7,9 +7,9 @@ namespace Fc.Bus.Kafka
 {
     public class DefaultKafkaPersistentConnection
     {
-        private readonly KafkaOptions _options;
+        private readonly ConfluentKafkaOptions _options;
 
-        public DefaultKafkaPersistentConnection(KafkaOptions options)
+        public DefaultKafkaPersistentConnection(ConfluentKafkaOptions options)
         {
             _options = options;
         }

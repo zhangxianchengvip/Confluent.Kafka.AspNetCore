@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 namespace Confluent.Kafka.AspNetCore
 {
     [AutoOptions]
-    public class KafkaOptions
+    public class ConfluentKafkaOptions
     {
         private const string DefaultBootstrapServers = "localhost:9092";
 
         public string BootstrapServers { get; set; } = DefaultBootstrapServers;
 
-        public string GroupId { get; set; } = typeof(KafkaOptions).Assembly.FullName;
+        public string GroupId { get; set; } = typeof(ConfluentKafkaOptions).Assembly.FullName;
 
         public int QueueBufferingMaxMessages { get; set; } = 10;
 
