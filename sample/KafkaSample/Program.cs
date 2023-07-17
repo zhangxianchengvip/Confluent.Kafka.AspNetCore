@@ -1,3 +1,4 @@
+using Confluent.Kafka;
 using Confluent.Kafka.AspNetCore;
 namespace KafkaSample;
 
@@ -13,7 +14,9 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        builder.Services.AddConfluentKafka(builder.Configuration);
+        builder.Services.AddConfluentKafkaProducer<string, byte[]>(builder.Configuration);
+        builder.Services.AddConfluentKafkaConsumer<Ignore, string>(builder.Configuration);
+        builder.Services.AddHostedService<TopicSub>();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

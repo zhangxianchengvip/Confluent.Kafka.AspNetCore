@@ -13,7 +13,7 @@ namespace Fc.Bus.Kafka
         {
             _options = options;
         }
-        public IProducer<string, byte[]> CreateProducer()
+        public IProducer<TKey, TValue> CreateProducer<TKey, TValue>()
         {
             var config = new ProducerConfig(new Dictionary<string, string>())
             {
@@ -23,7 +23,7 @@ namespace Fc.Bus.Kafka
                 RequestTimeoutMs = _options.RequestTimeoutMs
             };
 
-            return new ProducerBuilder<string, byte[]>(config).Build();
+            return new ProducerBuilder<TKey, TValue>(config).Build();
         }
 
         public void Dispose()

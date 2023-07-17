@@ -1,5 +1,6 @@
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Mvc;
+using System.Text;
 
 namespace KafkaSample.Controllers;
 [ApiController]
@@ -23,7 +24,10 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
-        await _progress.ProduceAsync("", new Message<string, byte[]> { });
+        var value = Encoding.UTF8.GetBytes("zxc");
+
+        await _progress.ProduceAsync("mc", new Message<string, byte[]> { Key = "zxc", Value = value });
+
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {
             Date = DateTime.Now.AddDays(index),

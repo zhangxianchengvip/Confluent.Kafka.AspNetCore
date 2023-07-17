@@ -15,7 +15,7 @@ namespace Confluent.Kafka.AspNetCore.Confluent.Kafka.AspNetCore
             _options = options;
         }
 
-        public IConsumer<Ignore, byte[]> CreateConsumer(string[] topics)
+        public IConsumer<TKey, TValue> CreateConsumer<TKey, TValue>()
         {
             var config = new ConsumerConfig
             {
@@ -26,7 +26,7 @@ namespace Confluent.Kafka.AspNetCore.Confluent.Kafka.AspNetCore
                 AutoOffsetReset = AutoOffsetReset.Earliest,// 从最早的开始消费起
                 AllowAutoCreateTopics = true
             };
-            return new ConsumerBuilder<Ignore, byte[]>(config).Build();
+            return new ConsumerBuilder<TKey, TValue>(config).Build();
 
         }
     }
