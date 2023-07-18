@@ -7,7 +7,7 @@ namespace EventBus
 {
     public interface IIntegrationEventHandler
     {
-        Task Handle<T>(string topic,T);
+        Task BaseHandle(string topic, string value);
     }
 }
 

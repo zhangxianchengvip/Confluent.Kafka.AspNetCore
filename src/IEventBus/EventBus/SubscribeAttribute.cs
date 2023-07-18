@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EventBus
 {
-    [AttributeUsage(AttributeTargets.Method)]
+    [AttributeUsage(AttributeTargets.Class)]
     public class SubscribeAttribute : Attribute
     {
         public string Topic { get; set; }

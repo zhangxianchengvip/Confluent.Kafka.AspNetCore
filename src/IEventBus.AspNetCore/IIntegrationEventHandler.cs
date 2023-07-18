@@ -6,8 +6,9 @@ namespace EventBus.AspNetCore
 {
     public abstract class IIntegrationEventHandler<T> : IIntegrationEventHandler
     {
-        public Task Handle(string topic, byte[] value)
+        public Task BaseHandle(string topic, string value)
         {
+
             T type = JsonSerializer.Deserialize<T>(value);
             return Handle(topic, type);
         }

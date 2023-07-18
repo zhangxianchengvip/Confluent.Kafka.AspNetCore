@@ -1,4 +1,5 @@
 ﻿using Confluent.Kafka.AspNetCore;
+using EventBus;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -12,8 +13,9 @@ namespace Confluent.Kafka.EventBus.AspNetCore
 
         public static IServiceCollection AddConfluentKafkaEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddConfluentKafkaProducer<string, byte[]>(configuration);
-            services.AddConfluentKafkaConsumer<Ignore, byte[]>(configuration);
+            services.AddEventBus();
+            services.AddConfluentKafkaProducer<string, string>(configuration);
+            services.AddConfluentKafkaConsumer<Ignore, string>(configuration);
             return services;
         }
     }

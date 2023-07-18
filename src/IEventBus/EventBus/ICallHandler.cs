@@ -1,45 +1,52 @@
 ﻿using EventBus;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Primitives;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace IEventBus.EventBus
+namespace EventBus.EventBus
 {
     public interface ICallHandler
     {
-        Task CallHandle(string topic, byte[] value);
+        Task Handle(string topic, string value);
     }
 
     public class DefaultCallHandler : ICallHandler
     {
-        private readonly ISubscriptionsManager _subManager;
         private readonly IServiceProvider _serviceProvider;
         private readonly IServiceScope serviceScope;
-        public DefaultCallHandler(ISubscriptionsManager subManager, IServiceScopeFactory serviceProviderFactory)
+        public DefaultCallHandler(IServiceScopeFactory serviceProviderFactory)
         {
-            _subManager = subManager;
             this.serviceScope = serviceProviderFactory.CreateScope();
             this._serviceProvider = serviceScope.ServiceProvider;
         }
 
-        public Task CallHandle(string topic, byte[] value)
+        public Task Handle(string topic, string value)
         {
-            List<Type> types = new List<Type>();
-            foreach (var subscription in types)
+            if (SubscriptionsManager.HasSubscriptionsForEvent(topic))
             {
-                using var scope = this._serviceProvider.CreateScope();
-                IIntegrationEventHandler? handler = scope.ServiceProvider.GetService(subscription) as IIntegrationEventHandler;
-                if (handler == null)
+                var subscriptions = SubscriptionsManager.GetHandlersForEvent(topic);
+                foreach (var subscription in subscriptions)
                 {
-                    throw new ApplicationException($"无法创建{subscription}类型的服务");
+                    using var scope = this._serviceProvider.CreateScope();
+                    IIntegrationEventHandler? handler = scope.ServiceProvider.GetService(subscription) as IIntegrationEventHandler;
+                    if (handler == null)
+                    {
+                        throw new ApplicationException($"无法创建{subscription}类型的服务");
+                    }
+                    return handler.BaseHandle(topic, value);
                 }
-                return handler.Handle(topic, value);
             }
-
-
-            throw new NotImplementedException();
+            else
+            {
+                string entryAsm = Assembly.GetEntryAssembly().GetName().Name;
+                Debug.WriteLine($"找不到可以处理eventName={topic}的处理程序，entryAsm:{entryAsm}");
+            }
+            return Task.CompletedTask;
         }
     }
 }

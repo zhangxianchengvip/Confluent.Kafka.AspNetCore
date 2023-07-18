@@ -13,9 +13,9 @@ public class WeatherForecastController : ControllerBase
     };
 
     private readonly ILogger<WeatherForecastController> _logger;
-    private readonly IProducer<string, byte[]> _progress;
+    private readonly IProducer<string,string> _progress;
 
-    public WeatherForecastController(ILogger<WeatherForecastController> logger, IProducer<string, byte[]> progress)
+    public WeatherForecastController(ILogger<WeatherForecastController> logger, IProducer<string, string> progress)
     {
         _logger = logger;
         _progress = progress;
@@ -26,7 +26,7 @@ public class WeatherForecastController : ControllerBase
     {
         var value = Encoding.UTF8.GetBytes("zxc");
 
-        await _progress.ProduceAsync("mc", new Message<string, byte[]> { Key = "zxc", Value = value });
+        await _progress.ProduceAsync("mc", new Message<string,string> { Key = "zxc", Value = "zxc" });
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
         {

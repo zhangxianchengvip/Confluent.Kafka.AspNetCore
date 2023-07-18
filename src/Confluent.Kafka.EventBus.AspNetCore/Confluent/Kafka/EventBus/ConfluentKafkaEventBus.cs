@@ -1,46 +1,85 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 using EventBus;
 using EventBus.EventBus;
+using static Confluent.Kafka.ConfigPropertyNames;
 
 namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
 {
     public class ConfluentKafkaEventBus : IEventBus
     {
 
-        private readonly IProducer<string, byte[]> _producer;
-        private readonly IConsumer<string, byte[]> _consumer;
+        private readonly IProducer<string, string> _producer;
+        private readonly IConsumer<string, string> _consumer;
         private readonly ICallHandler _callHandler;
 
-        public ConfluentKafkaEventBus(IProducer<string, byte[]> producer, IConsumer<string, byte[]> consumer, ICallHandler callHandler)
+        public ConfluentKafkaEventBus(IProducer<string, string> producer, IConsumer<string, string> consumer, ICallHandler callHandler)
         {
             _producer = producer;
             _consumer = consumer;
             _callHandler = callHandler;
         }
 
-        public void Publish<T>(string topic, T eventData)
+        public void Publish<T>(string topic, T data)
         {
-
-            throw new NotImplementedException();
+            var value = JsonSerializer.Serialize(data, typeof(T));
+            _producer.Produce(topic, new Message<string, string> { Value = value });
         }
 
-        public Task PublishAsync<T>(string topic, T eventData)
+        public Task PublishAsync<T>(string topic, T data)
         {
-            return _producer.ProduceAsync(topic, new Message<string, byte[]> { });
+            var value = JsonSerializer.Serialize(data, typeof(T));
+            return _producer.ProduceAsync(topic, new Message<string, string> { Value = value });
 
         }
-
-        public void Subscribe(string topic, Type handlerType)
+        public async Task Subscribe(string topic)
         {
-            throw new NotImplementedException();
-        }
+            await Task.Run(async () =>
+             {
+                 using (_consumer)
+                 {
+                     _consumer.Subscribe(topic);
+                     try
+                     {
+                         while (true)
+                         {
+                             try
+                             {
+                                 var cr = _consumer.Consume();
+                                 await _callHandler.Handle(cr.Topic, cr.Message.Value);
+                             }
+                             catch (OperationCanceledException)
+                             {
+                                 break;
+                             }
+                             catch (ConsumeException e)
+                             {
+                                 // Consumer errors should generally be ignored (or logged) unless fatal.
+                                 Console.WriteLine($"Consume error: {e.Error.Reason}");
 
-        public void Unsubscribe(string topic, Type handlerType)
-        {
-            throw new NotImplementedException();
+                                 if (e.Error.IsFatal)
+                                 {
+                                     // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
+                                     break;
+                                 }
+                             }
+                             catch (Exception e)
+                             {
+                                 Console.WriteLine($"Unexpected error: {e}");
+                                 break;
+                             }
+                         }
+                     }
+                     catch (OperationCanceledException)
+                     {
+                         Console.WriteLine("Closing consumer.");
+                         _consumer.Close();
+                     }
+                 }
+             });
         }
     }
 }
