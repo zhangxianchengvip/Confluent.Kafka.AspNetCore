@@ -1,6 +1,8 @@
 using Confluent.Kafka;
 using Confluent.Kafka.AspNetCore;
 using Confluent.Kafka.EventBus.AspNetCore;
+using EventBus;
+
 namespace KafkaSample;
 
 public class Program
@@ -19,7 +21,7 @@ public class Program
         //builder.Services.AddConfluentKafkaConsumer<Ignore, string>(builder.Configuration);
         //builder.Services.AddHostedService<TopicSub>();
         builder.Services.AddConfluentKafkaEventBus(builder.Configuration);
-       
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -28,6 +30,8 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseEventBus();
 
         app.UseHttpsRedirection();
 

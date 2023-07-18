@@ -26,7 +26,7 @@ namespace Confluent.Kafka.AspNetCore
         {
             var options = configuration.GetOptions<ConfluentKafkaOptions>();
 
-            services.AddScoped(sp =>
+            services.AddSingleton(sp =>
             {
                 return new DefaultKafkaConsumerConnection(options).CreateConsumer<TKey, TValue>();
             });

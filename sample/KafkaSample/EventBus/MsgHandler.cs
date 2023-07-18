@@ -12,3 +12,8 @@ public class MsgHandler : IIntegrationEventHandler<string>
         return Task.CompletedTask;
     }
 }
+
+public class Ms
+{
+    public string Zxc { get; set; }
+}

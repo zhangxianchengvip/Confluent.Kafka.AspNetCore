@@ -8,16 +8,28 @@ using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Text;
+
 namespace EventBus
 {
     public static class EventBusExtension
     {
+        public static IApplicationBuilder UseEventBus(this IApplicationBuilder app)
+        {
+            var sp = app.ApplicationServices;
+            var bus = sp.GetRequiredService<IEventBus>();
+            bus.Subscribe(SubscriptionsManager.GetTopic().ToArray());
+            return app;
+        }
+
         public static IServiceCollection AddEventBus(this IServiceCollection services)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(s => !s.FullName.Contains("System") && !s.FullName.Contains("Microsoft") && !s.FullName.Contains("netstandard") && !s.FullName.Contains("Swashbuckle")).ToArray();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(s =>
+                !s.FullName.Contains("System") && !s.FullName.Contains("Microsoft") && !s.FullName.Contains("netstandard") &&
+                !s.FullName.Contains("Swashbuckle")).ToArray();
             AddEventBus(services, assemblies);
             return services;
         }
+
         public static IServiceCollection AddEventBus(this IServiceCollection services, params Assembly[] assemblies)
         {
             List<Type> handlers = new List<Type>();
@@ -27,9 +39,10 @@ namespace EventBus
                 var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.GetCustomAttribute<SubscribeAttribute>() != null);
                 handlers.AddRange(types);
             }
-            return AddEventBus(services, handlers);
 
+            return AddEventBus(services, handlers);
         }
+
         public static IServiceCollection AddEventBus(this IServiceCollection services, List<Type> types)
         {
             services.AddSingleton<ICallHandler, DefaultCallHandler>();
@@ -44,6 +57,7 @@ namespace EventBus
                 {
                     throw new ApplicationException($"There shoule be at least one EventNameAttribute on {type}");
                 }
+
                 foreach (var subscribe in subscribes)
                 {
                     SubscriptionsManager.AddSubscription(subscribe.Topic, type);

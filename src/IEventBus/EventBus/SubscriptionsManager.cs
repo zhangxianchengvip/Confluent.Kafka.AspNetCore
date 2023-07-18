@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 
 namespace EventBus
 {
     public static class SubscriptionsManager
     {
         private static Dictionary<string, List<Type>> _handlers = new Dictionary<string, List<Type>>();
+        public static IEnumerable<string> GetTopic() => _handlers.Select(s => s.Key);
         public static bool IsEmpty => !_handlers.Keys.Any();
         public static void Clear() => _handlers.Clear();
 
@@ -21,11 +23,13 @@ namespace EventBus
             {
                 _handlers.Add(topic, new List<Type>());
             }
+
             //如果已经注册过，则报错
             if (_handlers[topic].Contains(handlerType))
             {
                 throw new ArgumentException($"Handler Type {handlerType} already registered for '{topic}'", nameof(handlerType));
             }
+
             _handlers[topic].Add(handlerType);
         }
 
@@ -51,6 +55,5 @@ namespace EventBus
         /// <param name="topic"></param>
         /// <returns></returns>
         public static bool HasSubscriptionsForEvent(string topic) => _handlers.ContainsKey(topic);
-
     }
 }

@@ -9,9 +9,8 @@ namespace EventBus
 {
     public interface IEventBus
     {
-
         void Publish<T>(string topic, T data);
         Task PublishAsync<T>(string topic, T data);
-        Task Subscribe(string topic);
+        Task Subscribe(params string[] topics);
     }
 }

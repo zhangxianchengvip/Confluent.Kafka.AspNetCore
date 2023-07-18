@@ -12,7 +12,7 @@ namespace EventBus.EventBus
 {
     public interface ICallHandler
     {
-        Task Handle(string topic, string value);
+        Task Handle(string topic, byte[] value);
     }
 
     public class DefaultCallHandler : ICallHandler
@@ -25,7 +25,7 @@ namespace EventBus.EventBus
             this._serviceProvider = serviceScope.ServiceProvider;
         }
 
-        public Task Handle(string topic, string value)
+        public Task Handle(string topic, byte[] value)
         {
             if (SubscriptionsManager.HasSubscriptionsForEvent(topic))
             {
