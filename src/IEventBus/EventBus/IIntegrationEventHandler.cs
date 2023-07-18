@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace EventBus
 {
-    public interface IIntegrationEventHandler<TValue>
+    public interface IIntegrationEventHandler
     {
-        Task Handle(TValue value);
+        Task Handle<T>(string topic,T);
     }
 }
 

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using EventBus;
+using EventBus.EventBus;
+
 namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
 {
     public class ConfluentKafkaEventBus : IEventBus
@@ -10,10 +12,13 @@ namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
 
         private readonly IProducer<string, byte[]> _producer;
         private readonly IConsumer<string, byte[]> _consumer;
-        public ConfluentKafkaEventBus(IProducer<string, byte[]> producer, IConsumer<string, byte[]> consumer)
+        private readonly ICallHandler _callHandler;
+
+        public ConfluentKafkaEventBus(IProducer<string, byte[]> producer, IConsumer<string, byte[]> consumer, ICallHandler callHandler)
         {
             _producer = producer;
             _consumer = consumer;
+            _callHandler = callHandler;
         }
 
         public void Publish<T>(string topic, T eventData)

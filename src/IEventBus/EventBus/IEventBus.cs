@@ -9,10 +9,7 @@ namespace EventBus
     {
         void Publish<T>(string topic, T eventData);
         Task PublishAsync<T>(string topic, T eventData);
-
-
         void Subscribe(string topic, Type handlerType);
-
         void Unsubscribe(string topic, Type handlerType);
     }
 }
