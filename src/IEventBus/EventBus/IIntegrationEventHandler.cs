@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Confluent.Kafka.AspNetCore.Extensions
+namespace EventBus
 {
     public interface ISubscribeHandler<TValue>
     {

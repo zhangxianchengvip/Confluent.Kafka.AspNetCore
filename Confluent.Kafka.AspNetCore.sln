@@ -5,11 +5,17 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4900F3DA-5C4F-41A8-8AAA-65684DF8C6E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confluent.Kafka.AspNetCore", "src\Confluent.Kafka.AspNetCore\Confluent.Kafka.AspNetCore.csproj", "{BF50B832-4D73-40BC-8DFA-AF16100CD752}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Confluent.Kafka.AspNetCore", "src\Confluent.Kafka.AspNetCore\Confluent.Kafka.AspNetCore.csproj", "{BF50B832-4D73-40BC-8DFA-AF16100CD752}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{82951B74-3663-48D8-9E3A-8DE4E3695C35}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KafkaSample", "sample\KafkaSample\KafkaSample.csproj", "{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KafkaSample", "sample\KafkaSample\KafkaSample.csproj", "{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEventBus.AspNetCore", "src\IEventBus.AspNetCore\IEventBus.AspNetCore.csproj", "{218A5539-3C2D-435A-8915-495023721118}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IEventBus", "src\IEventBus\IEventBus.csproj", "{39A2E105-697D-45C0-9880-C2AE449B754F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Confluent.Kafka.EventBus.AspNetCore", "src\Confluent.Kafka.EventBus.AspNetCore\Confluent.Kafka.EventBus.AspNetCore.csproj", "{A3F45D29-AC29-4FBD-AAD7-CA123351438A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -25,6 +31,18 @@ Global
 		{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915}.Release|Any CPU.Build.0 = Release|Any CPU
+		{218A5539-3C2D-435A-8915-495023721118}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{218A5539-3C2D-435A-8915-495023721118}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{218A5539-3C2D-435A-8915-495023721118}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{218A5539-3C2D-435A-8915-495023721118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{39A2E105-697D-45C0-9880-C2AE449B754F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{39A2E105-697D-45C0-9880-C2AE449B754F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{39A2E105-697D-45C0-9880-C2AE449B754F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{39A2E105-697D-45C0-9880-C2AE449B754F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3F45D29-AC29-4FBD-AAD7-CA123351438A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3F45D29-AC29-4FBD-AAD7-CA123351438A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3F45D29-AC29-4FBD-AAD7-CA123351438A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3F45D29-AC29-4FBD-AAD7-CA123351438A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -32,6 +50,9 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BF50B832-4D73-40BC-8DFA-AF16100CD752} = {4900F3DA-5C4F-41A8-8AAA-65684DF8C6E8}
 		{4AB3255B-07F6-4D8C-BEDE-747EC5B4F915} = {82951B74-3663-48D8-9E3A-8DE4E3695C35}
+		{218A5539-3C2D-435A-8915-495023721118} = {4900F3DA-5C4F-41A8-8AAA-65684DF8C6E8}
+		{39A2E105-697D-45C0-9880-C2AE449B754F} = {4900F3DA-5C4F-41A8-8AAA-65684DF8C6E8}
+		{A3F45D29-AC29-4FBD-AAD7-CA123351438A} = {4900F3DA-5C4F-41A8-8AAA-65684DF8C6E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4BD48E91-CFAA-407D-A9C1-984E7FAF2DC8}

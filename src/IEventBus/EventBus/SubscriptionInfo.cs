@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Confluent.Kafka.AspNetCore.Extensions
+namespace Confluent.Kafka.AspNetCore.EventBus
 {
-    public class SubscriptionsManager
+    public class SubscriptionInfo
     {
     }
 }
