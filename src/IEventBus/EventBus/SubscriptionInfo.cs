@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Confluent.Kafka.AspNetCore.EventBus
+namespace EventBus
 {
     public class SubscriptionInfo
     {

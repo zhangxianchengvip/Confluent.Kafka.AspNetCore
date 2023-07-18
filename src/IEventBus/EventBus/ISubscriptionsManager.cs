@@ -4,7 +4,7 @@ using System.Text;
 
 namespace EventBus
 {
-    public interface SubscriptionsManager
+    public interface ISubscriptionsManager
     {
     }
 }

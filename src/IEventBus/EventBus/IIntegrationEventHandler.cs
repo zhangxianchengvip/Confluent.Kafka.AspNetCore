@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace EventBus
 {
-    public interface ISubscribeHandler<TValue>
+    public interface IIntegrationEventHandler<TValue>
     {
         Task Handle(TValue value);
     }
