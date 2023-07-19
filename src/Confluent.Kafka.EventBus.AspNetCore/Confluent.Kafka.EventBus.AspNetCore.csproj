@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netstandard2.1</TargetFramework>
@@ -7,7 +7,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Confluent.Kafka.AspNetCore\Confluent.Kafka.AspNetCore.csproj" />
-    <ProjectReference Include="..\IEventBus.AspNetCore\IEventBus.AspNetCore.csproj" />
+    <ProjectReference Include="..\IEventBus\IEventBus.csproj" />
   </ItemGroup>
 
 </Project>

@@ -15,7 +15,7 @@ namespace Confluent.Kafka.EventBus.AspNetCore
     {
         public static IServiceCollection AddConfluentKafkaEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEventBusAspNetCore();
+            services.AddEventBus();
             services.AddConfluentKafkaProducer<string, string>(configuration);
             services.AddConfluentKafkaConsumer<Ignore, byte[]>(configuration);
             services.AddSingleton<IEventBus, ConfluentKafkaEventBus>();

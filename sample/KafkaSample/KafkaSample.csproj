@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\Confluent.Kafka.EventBus.AspNetCore\Confluent.Kafka.EventBus.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\IEventBus.AspNetCore\IEventBus.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>
