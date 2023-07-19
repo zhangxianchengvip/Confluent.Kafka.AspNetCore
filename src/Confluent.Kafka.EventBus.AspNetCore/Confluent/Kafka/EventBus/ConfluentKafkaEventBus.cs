@@ -34,12 +34,6 @@ namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
         {
             Task.Run(async () => { await StartConsumerLoop(topics); });
         }
-
-        public void UnSubscribe(params string[] topics)
-        {
-            throw new NotImplementedException();
-        }
-
         private async Task StartConsumerLoop(params string[] topics)
         {
             using (_consumer)

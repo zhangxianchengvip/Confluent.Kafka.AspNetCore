@@ -1,4 +1,5 @@
 ﻿using EventBus.Abstractions;
+using EventBus.SubsManager;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -45,11 +46,6 @@ namespace EventBus.AspNetCore.EventBus.AspNetCore
                     }
                 });
             }
-        }
-
-        public void UnSubscribe(params string[] topics)
-        {
-            throw new NotImplementedException();
         }
     }
 }
