@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus;
+using EventBus.AspNetCore;
 
 namespace Confluent.Kafka.EventBus.AspNetCore
 {
@@ -13,7 +14,7 @@ namespace Confluent.Kafka.EventBus.AspNetCore
     {
         public static IServiceCollection AddConfluentKafkaEventBus(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddEventBus();
+            services.AddEventBusAspNetCore();
             services.AddConfluentKafkaProducer<string, string>(configuration);
             services.AddConfluentKafkaConsumer<Ignore, byte[]>(configuration);
             services.AddSingleton<IEventBus, ConfluentKafkaEventBus>();

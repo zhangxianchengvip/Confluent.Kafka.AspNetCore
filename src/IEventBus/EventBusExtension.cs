@@ -45,8 +45,6 @@ namespace EventBus
 
         public static IServiceCollection AddEventBus(this IServiceCollection services, List<Type> types)
         {
-            services.AddSingleton<ICallHandler, DefaultCallHandler>();
-
             foreach (var type in types)
             {
                 services.AddScoped(type, type);
