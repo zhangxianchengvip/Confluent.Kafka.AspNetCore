@@ -11,8 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Confluent.Kafka.EventBus.AspNetCore\Confluent.Kafka.EventBus.AspNetCore.csproj" />
-    <ProjectReference Include="..\..\src\IEventBus.AspNetCore\IEventBus.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\src\Confluent.Kafka.AspNetCore\Confluent.Kafka.AspNetCore.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="EventBus\" />
   </ItemGroup>
 
 </Project>

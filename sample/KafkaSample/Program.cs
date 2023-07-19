@@ -1,8 +1,5 @@
 using Confluent.Kafka;
 using Confluent.Kafka.AspNetCore;
-using Confluent.Kafka.EventBus.AspNetCore;
-using EventBus;
-using EventBus.AspNetCore;
 namespace KafkaSample;
 
 public class Program
@@ -17,11 +14,8 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
-        //builder.Services.AddConfluentKafkaProducer<string, byte[]>(builder.Configuration);
-        //builder.Services.AddConfluentKafkaConsumer<Ignore, string>(builder.Configuration);
-        //builder.Services.AddHostedService<TopicSub>();
-        //builder.Services.AddConfluentKafkaEventBus(builder.Configuration);
-        builder.Services.AddEventBusAspNetCore();
+        builder.Services.AddConfluentKafkaProducer<string, byte[]>(builder.Configuration);
+        builder.Services.AddConfluentKafkaConsumer<Ignore, string>(builder.Configuration);
 
         var app = builder.Build();
 
@@ -31,8 +25,6 @@ public class Program
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
-        app.UseEventBus();
 
         app.UseHttpsRedirection();
 
