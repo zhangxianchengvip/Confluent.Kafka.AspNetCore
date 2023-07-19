@@ -6,7 +6,7 @@ using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
-namespace EventBus.AspNetCore
+namespace EventBus
 {
     public class DefaultCallEventHandler : ICallEventHandler
     {

@@ -7,7 +7,6 @@ namespace EventBus.AspNetCore
     {
         public static IServiceCollection AddEventBusAspNetCore(this IServiceCollection services)
         {
-            services.AddSingleton<ICallEventHandler, DefaultCallEventHandler>();
             services.AddEventBus();
             return services;
         }
