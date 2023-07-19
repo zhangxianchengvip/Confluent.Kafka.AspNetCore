@@ -6,7 +6,7 @@ using EventBus.SubsManager;
 
 namespace KafkaSample.EventBus;
 
-[Subscribe("mc")]
+[Subscribe("Channel")]
 public class MsgHandler : DynamicIntegrationEventHandler
 {
     public async override Task HandleAsync(string topic, dynamic value)

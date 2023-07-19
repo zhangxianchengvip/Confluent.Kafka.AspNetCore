@@ -7,7 +7,7 @@ namespace EventBus.SubsManager
     public static class SubscriptionsManager
     {
         private static readonly Dictionary<string, List<Type>> Handlers = new Dictionary<string, List<Type>>();
-        public static IEnumerable<string> GetTopic() => Handlers.Select(s => s.Key);
+        public static IEnumerable<string> GetTopics() => Handlers.Select(s => s.Key);
         public static bool IsEmpty => !Handlers.Keys.Any();
         public static void Clear() => Handlers.Clear();
         public static void AddSubscription(string topic, Type handlerType)

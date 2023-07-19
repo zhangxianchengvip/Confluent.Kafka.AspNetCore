@@ -15,7 +15,7 @@ namespace EventBus
         {
             var sp = app.ApplicationServices;
             var bus = sp.GetRequiredService<IEventBus>();
-            bus.Subscribe(SubscriptionsManager.GetTopic().ToArray());
+            bus.Subscribe(SubscriptionsManager.GetTopics().ToArray());
             return app;
         }
 
