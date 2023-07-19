@@ -11,9 +11,10 @@
     <RepositoryUrl>https://github.com/zhangxianchengvip/Confluent.Kafka.AspNetCore</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageTags>Confluent;Kafka;AspNetCore</PackageTags>
-    <PackageReleaseNotes>Confluent.Kafka.AspNetCore 服务注册扩展包</PackageReleaseNotes>
+    <PackageReleaseNotes>更改IConsumer 注册方式为Singleton</PackageReleaseNotes>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
   <ItemGroup>
