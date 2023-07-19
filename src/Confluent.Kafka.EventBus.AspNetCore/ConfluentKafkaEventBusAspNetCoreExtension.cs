@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus;
+using EventBus.Abstractions;
 using EventBus.AspNetCore;
 
 namespace Confluent.Kafka.EventBus.AspNetCore

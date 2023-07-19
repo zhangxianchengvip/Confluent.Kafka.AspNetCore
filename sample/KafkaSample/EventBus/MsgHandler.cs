@@ -1,15 +1,19 @@
 ﻿using EventBus;
+using EventBus.Abstractions;
 using EventBus.AspNetCore;
+using EventBus.Events;
+using EventBus.SubsManager;
 
 namespace KafkaSample.EventBus;
 
 [Subscribe("mc")]
-public class MsgHandler : IIntegrationEventHandler<string>
+public class MsgHandler : DynamicIntegrationEventHandler
 {
-    public override Task Handle(string topic, string value)
+    public async override Task HandleAsync(string topic, dynamic value)
     {
-        Console.WriteLine($"{topic}:{value}");
-        return Task.CompletedTask;
+        string values = value.Zxc;
+        Console.WriteLine(values);
+        await Task.Yield();
     }
 }
 

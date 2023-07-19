@@ -1,17 +1,15 @@
-﻿using EventBus;
-using EventBus.EventBus;
-using Microsoft.AspNetCore.Builder;
+﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.CompilerServices;
-using System.Text;
+using EventBus.Abstractions;
+using EventBus.SubsManager;
 
 namespace EventBus
 {
-    public static class EventBusExtension
+    public static class EventBusServiceCollectionExtension
     {
         public static IApplicationBuilder UseEventBus(this IApplicationBuilder app)
         {
@@ -23,20 +21,32 @@ namespace EventBus
 
         public static IServiceCollection AddEventBus(this IServiceCollection services)
         {
-            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where(s =>
-                !s.FullName.Contains("System") && !s.FullName.Contains("Microsoft") && !s.FullName.Contains("netstandard") &&
-                !s.FullName.Contains("Swashbuckle")).ToArray();
+            var assemblies = AppDomain.CurrentDomain.GetAssemblies().Where
+            (
+                s =>
+                    !s.FullName.Contains("System") &&
+                    !s.FullName.Contains("Microsoft") &&
+                    !s.FullName.Contains("netstandard") &&
+                    !s.FullName.Contains("Swashbuckle")
+            ).ToArray();
+
             AddEventBus(services, assemblies);
+
             return services;
         }
 
         public static IServiceCollection AddEventBus(this IServiceCollection services, params Assembly[] assemblies)
         {
             List<Type> handlers = new List<Type>();
+
             foreach (var asm in assemblies)
             {
                 //用GetTypes()，这样非public类也能注册
-                var types = asm.GetTypes().Where(t => t.IsAbstract == false && t.GetCustomAttribute<SubscribeAttribute>() != null);
+                var types = asm.GetTypes().Where
+                (
+                    t => t.IsAbstract == false && t.GetCustomAttribute<SubscribeAttribute>() != null
+                );
+
                 handlers.AddRange(types);
             }
 

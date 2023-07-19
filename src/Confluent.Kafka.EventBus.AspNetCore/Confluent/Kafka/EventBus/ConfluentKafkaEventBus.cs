@@ -1,11 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using EventBus;
-using EventBus.EventBus;
-using static Confluent.Kafka.ConfigPropertyNames;
+using EventBus.Abstractions;
 
 namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
 {
@@ -13,13 +9,13 @@ namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
     {
         private readonly IProducer<string, string> _producer;
         private readonly IConsumer<Ignore, byte[]> _consumer;
-        private readonly ICallHandler _callHandler;
+        private readonly ICallEventHandler _callEventHandler;
 
-        public ConfluentKafkaEventBus(IProducer<string, string> producer, IConsumer<Ignore, byte[]> consumer, ICallHandler callHandler)
+        public ConfluentKafkaEventBus(IProducer<string, string> producer, IConsumer<Ignore, byte[]> consumer, ICallEventHandler callEventHandler)
         {
             _producer = producer;
             _consumer = consumer;
-            _callHandler = callHandler;
+            _callEventHandler = callEventHandler;
         }
 
         public void Publish<T>(string topic, T data)
@@ -34,51 +30,58 @@ namespace Confluent.Kafka.EventBus.AspNetCore.Confluent.Kafka.EventBus
             return _producer.ProduceAsync(topic, new Message<string, string> { Value = value });
         }
 
-        public async Task Subscribe(params string[] topics)
+        public void Subscribe(params string[] topics)
         {
-            await Task.Run(async () =>
-            {
-                using (_consumer)
-                {
-                    _consumer.Subscribe(topics);
-                    try
-                    {
-                        while (true)
-                        {
-                            try
-                            {
-                                var cr = _consumer.Consume();
-                                await _callHandler.Handle(cr.Topic, cr.Message.Value);
-                            }
-                            catch (OperationCanceledException)
-                            {
-                                break;
-                            }
-                            catch (ConsumeException e)
-                            {
-                                // Consumer errors should generally be ignored (or logged) unless fatal.
-                                Console.WriteLine($"Consume error: {e.Error.Reason}");
+            Task.Run(async () => { await StartConsumerLoop(topics); });
+        }
 
-                                if (e.Error.IsFatal)
-                                {
-                                    // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
-                                    break;
-                                }
-                            }
-                            catch (Exception e)
+        public void UnSubscribe(params string[] topics)
+        {
+            throw new NotImplementedException();
+        }
+
+        private async Task StartConsumerLoop(params string[] topics)
+        {
+            using (_consumer)
+            {
+                _consumer.Subscribe(topics);
+                try
+                {
+                    while (true)
+                    {
+                        try
+                        {
+                            var cr = _consumer.Consume();
+                            await _callEventHandler.Handle(cr.Topic, cr.Message.Value);
+                        }
+                        catch (OperationCanceledException)
+                        {
+                            break;
+                        }
+                        catch (ConsumeException e)
+                        {
+                            // Consumer errors should generally be ignored (or logged) unless fatal.
+                            Console.WriteLine($"Consume error: {e.Error.Reason}");
+
+                            if (e.Error.IsFatal)
                             {
-                                Console.WriteLine($"Unexpected error: {e}");
+                                // https://github.com/edenhill/librdkafka/blob/master/INTRODUCTION.md#fatal-consumer-errors
                                 break;
                             }
                         }
-                    }
-                    catch (OperationCanceledException)
-                    {
-                        Console.WriteLine("Closing consumer.");
-                        _consumer.Close();
+                        catch (Exception e)
+                        {
+                            Console.WriteLine($"Unexpected error: {e}");
+                            break;
+                        }
                     }
                 }
-            });
+                catch (OperationCanceledException)
+                {
+                    Console.WriteLine("Closing consumer.");
+                    _consumer.Close();
+                }
+            }
         }
     }
 }

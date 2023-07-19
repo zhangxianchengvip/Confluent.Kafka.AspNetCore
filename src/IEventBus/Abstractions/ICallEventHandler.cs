@@ -8,9 +8,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace EventBus.EventBus
+namespace EventBus.Abstractions
 {
-    public interface ICallHandler
+    public interface ICallEventHandler
     {
         Task Handle(string topic, byte[] value);
     }

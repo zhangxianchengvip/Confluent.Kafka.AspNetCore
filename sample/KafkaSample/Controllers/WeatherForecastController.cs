@@ -27,9 +27,9 @@ public class WeatherForecastController : ControllerBase
     [HttpGet(Name = "GetWeatherForecast")]
     public async Task<IEnumerable<WeatherForecast>> Get()
     {
-        var ss = JsonSerializer.Serialize(new Ms() { Zxc = "zxczxczxc" },typeof(Ms));
+        var ss = JsonSerializer.Serialize(new Ms() { Zxc = "zxczxczxc" }, typeof(Ms));
 
-        await _progress.ProduceAsync("mc", new Message<string, string> { Key = "zxc", Value =ss });
+        await _progress.ProduceAsync("mc", new Message<string, string> { Value = ss });
 
         return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {
