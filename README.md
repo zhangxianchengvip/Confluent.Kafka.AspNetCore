@@ -26,7 +26,7 @@ builder.Services.AddConfluentKafkaProducer<string, byte[]>(builder.Configuration
 builder.Services.AddConfluentKafkaConsumer<Ignore, string>(builder.Configuration);
 ```
 
-3. 生产者构造函数注入及使用
+3. 生产者构造函数注入及使用（反正生产已经注册了，想怎么用您说了算😁）
 
 ```C#
 //注入
@@ -52,40 +52,32 @@ public async Task<IEnumerable<WeatherForecast>> Get()
 }
 ```
 
-4.消费者使用
+4.消费者使用（反正消费者已经注册了，想怎么用您说了算😁）
 
 ```C#
 //继承BackgroundService类覆写ExecuteAsync 订阅topic
 public class TopicSub : BackgroundService
 {
-    public IServiceProvider Services { get; }
-    public TopicSub(IServiceProvider services)
+    public readonly IConsumer<Ignore, string> _consumer;
+
+    public TopicSub(IConsumer<Ignore, string> consumer)
     {
-        Services = services;
+        _consumer = consumer;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
         List<string> list = new List<string> { "mc" };
-        using (var scope = Services.CreateScope())
-        {
-            foreach (var item in list)
+        await _consumer.StartConsumerLoop
+        (
+            (s, k) =>
             {
-                var _consumer = scope.ServiceProvider.GetRequiredService<IConsumer<Ignore, string>>();
-
-                await _consumer.StartConsumerLoop
-                (
-                    (s, k) =>
-                    {
-                        Console.WriteLine($"{s}:{k}");
-                        return Task.FromResult(true);
-                    }, item
-                );
-            }
-        }
+                Console.WriteLine($"{s}:{k}");
+                return Task.FromResult(true);
+            },
+            list.ToArray()
+        );
     }
-
-
 }
 //注入后台服务
 builder.Services.AddHostedService<TopicSub>();
@@ -100,8 +92,8 @@ builder.Services.AddHostedService<TopicSub>();
 ```json
 {
  "ConfluentKafka": {
-      "BootstrapServers":"",
-       "GroupId":"",
+      "BootstrapServers":"localhost:9092",
+       "GroupId":"default",
        "QueueBufferingMaxMessages":10,
        "MessageTimeoutMs": 5000,
       "RequestTimeoutMs": 3000
